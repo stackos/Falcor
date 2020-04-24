@@ -204,7 +204,7 @@ namespace Falcor
     public:
         typename std::shared_ptr<Derived> shared_from_this()
         {
-            Base* pBase = static_cast<Derived*>(this);
+            Base* pBase = (Derived*) this;
             std::shared_ptr<Base> pShared = pBase->shared_from_this();
             return std::static_pointer_cast<Derived>(pShared);
         }

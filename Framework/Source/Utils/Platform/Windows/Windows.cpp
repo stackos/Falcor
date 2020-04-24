@@ -481,7 +481,7 @@ namespace Falcor
             LPVOID lpMsgBuf;
             FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
                 NULL, dwError, MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), (LPTSTR)&lpMsgBuf, 0, NULL);
-            std::wstring err((LPTSTR)lpMsgBuf);
+            std::string err((LPTSTR)lpMsgBuf);
             logWarning("setThreadAffinity failed with error: " + std::string(err.begin(), err.end()));
             LocalFree(lpMsgBuf);
         }
@@ -503,7 +503,7 @@ namespace Falcor
             LPVOID lpMsgBuf;
             FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
                 NULL, dwError, MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), (LPTSTR)&lpMsgBuf, 0, NULL);
-            std::wstring err((LPTSTR)lpMsgBuf);
+            std::string err((LPTSTR)lpMsgBuf);
             logWarning("setThreadPriority failed with error: " + std::string(err.begin(), err.end()));
             LocalFree(lpMsgBuf);
         }

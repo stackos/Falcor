@@ -67,7 +67,7 @@ namespace Falcor
                 EDIDdata, // buffer
                 &edidsize); // buffer size
 
-            if (retValue != ERROR_SUCCESS || 0 != wcscmp(valueName, L"EDID"))
+            if (retValue != ERROR_SUCCESS || 0 != strcmp(valueName, "EDID"))
                 continue;
 
             WidthMm = ((EDIDdata[68] & 0xF0) << 4) + EDIDdata[66];
@@ -79,7 +79,7 @@ namespace Falcor
         return false; // EDID not found
     }
 
-    bool GetSizeForDevID(const std::wstring& TargetDevID, short& WidthMm, short& HeightMm)
+    bool GetSizeForDevID(const std::string& TargetDevID, short& WidthMm, short& HeightMm)
     {
         HDEVINFO devInfo = SetupDiGetClassDevsEx(
             &GUID_CLASS_MONITOR, //class GUID
@@ -106,9 +106,9 @@ namespace Falcor
                 TCHAR Instance[MAX_DEVICE_ID_LEN];
                 SetupDiGetDeviceInstanceId(devInfo, &devInfoData, Instance, MAX_DEVICE_ID_LEN, NULL);
 
-                std::wstring sInstance(Instance);
+                std::string sInstance(Instance);
 
-                if (sInstance.find(TargetDevID) == std::wstring::npos) {
+                if (sInstance.find(TargetDevID) == std::string::npos) {
                     continue;
                 }
 
@@ -141,7 +141,7 @@ namespace Falcor
         while (EnumDisplayDevices(0, devIdx, &dd, 0))
         {
             devIdx++;
-            if (0 != wcscmp(dd.DeviceName, mi.szDevice))
+            if (0 != strcmp(dd.DeviceName, mi.szDevice))
                 continue;
      
             DISPLAY_DEVICE ddMon;
@@ -181,7 +181,7 @@ namespace Falcor
             DISPLAY_DEVICE dev;
             DisplayDeviceFromHMonitor(hMonitor, dev);
 
-            std::wstring DeviceID(dev.DeviceID);
+            std::string DeviceID(dev.DeviceID);
             DeviceID = DeviceID.substr(8, DeviceID.find(L'\\', 9) - 8);
 
             short WidthMm, HeightMm;
@@ -193,7 +193,7 @@ namespace Falcor
             float diag = sqrt(wInch * wInch + hInch * hInch);
 
             MonitorInfo::MonitorDesc desc;
-            desc.mIdentifier = wstring_2_string(DeviceID);
+            desc.mIdentifier = DeviceID;
             desc.mResolution = glm::vec2(
                 abs(info.rcMonitor.left - info.rcMonitor.right), 
                 abs(info.rcMonitor.top  - info.rcMonitor.bottom));
